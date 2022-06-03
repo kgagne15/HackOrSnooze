@@ -24,6 +24,26 @@ function generateStoryMarkup(story) {
 
   const hostName = story.getHostName();
   if (currentUser) {
+    const favIds = []; 
+  for (let fav of currentUser.favorites){
+    favIds.push(fav.storyId)
+  }
+
+  if (favIds.includes(story.storyId)){
+    return $(`
+      <li id="${story.storyId}">
+      <a class="btn btn-md star">
+        <i class="fa-star fas"></i>
+         </a>
+        <a href="${story.url}" target="a_blank" class="story-link">
+          ${story.title}
+        </a>
+        <small class="story-hostname">(${hostName})</small>
+        <small class="story-author">by ${story.author}</small>
+        <small class="story-user">posted by ${story.username}</small>
+      </li>
+    `);
+  } else {
     return $(`
       <li id="${story.storyId}">
       <a class="btn btn-md star">
@@ -37,6 +57,8 @@ function generateStoryMarkup(story) {
         <small class="story-user">posted by ${story.username}</small>
       </li>
     `);
+  }
+    
   } else{
   return $(`
       <li id="${story.storyId}">
@@ -70,7 +92,8 @@ $allStoriesList.on('click', '.star', function(e){
     removeFav(currentUser, storyId)
     console.log('i\'ve removed this as a favorite')
   } else {
-    console.log('this isn not a favorite yet')
+    console.log('this isn not a favorite yet, I\'ll add it')
+    addFav(currentUser, storyId)
   }
 
 })
