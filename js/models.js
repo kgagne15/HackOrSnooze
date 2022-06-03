@@ -97,7 +97,7 @@ class StoryList {
       data: {token, story: {title, author, url}},
     })
     
-    const story = newStory(res.data.story);
+    const story = new Story(res.data.story);
     this.stories.unshift(story);
     user.ownStories.unshift(story); 
 

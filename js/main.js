@@ -3,12 +3,15 @@
 // So we don't have to keep re-finding things on page, find DOM elements once:
 
 const $body = $("body");
+const $newStoryBtn = $('#main-nav-links'); 
+const $newStorySubmit = $('#new-story-submit');
 
 const $storiesLoadingMsg = $("#stories-loading-msg");
 const $allStoriesList = $("#all-stories-list");
 
 const $loginForm = $("#login-form");
 const $signupForm = $("#signup-form");
+const $newStoryForm = $('#new-story-form');
 
 const $navLogin = $("#nav-login");
 const $navUserProfile = $("#nav-user-profile");

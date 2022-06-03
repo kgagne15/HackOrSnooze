@@ -35,6 +35,20 @@ function generateStoryMarkup(story) {
     `);
 }
 
+
+
+$newStorySubmit.on('click', async function(e){
+  e.preventDefault();
+  const author = $('#new-story-author').val();
+  const title = $('#new-story-title').val(); 
+  const url = $('#new-story-url').val(); 
+  console.log(author, title, url)
+
+  const story = {author, title, url}; 
+  storyList.addStory(currentUser, story)
+  const newStory = await storyList.addStory(currentUser, story);
+})
+
 /** Gets list of stories from server, generates their HTML, and puts on page. */
 
 function putStoriesOnPage() {
