@@ -26,8 +26,8 @@ function generateStoryMarkup(story) {
   if (currentUser) {
     return $(`
       <li id="${story.storyId}">
-      <a class="btn btn-md">
-        <i class="fa fa-regular fa-star"></i>
+      <a class="btn btn-md star">
+        <i class="fa-star far"></i>
          </a>
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
@@ -51,7 +51,59 @@ function generateStoryMarkup(story) {
   }
 }
 
+$allStoriesList.on('click', '.star', function(e){
+  console.log(e.target)
+  let $item = $(e.target);
+  let $closestLi = $item.closest('li');
+  let storyId = $closestLi.attr('id');
+  //toggleFav(currentUser, storyId);
+  console.log(storyId)
+  console.log(currentUser.favorites.storyId)
 
+  const favIds = []; 
+  for (let fav of currentUser.favorites){
+    favIds.push(fav.storyId)
+  }
+  console.log('favIds', favIds)
+
+  if (favIds.includes(storyId)) {
+    removeFav(currentUser, storyId)
+    console.log('i\'ve removed this as a favorite')
+  } else {
+    console.log('this isn not a favorite yet')
+  }
+
+})
+
+function toggleFav(user, storyId){
+  console.log(user.favorites, 'these are the favorites')
+
+  
+}
+
+async function addFav(user, storyId){
+  console.log(user.loginToken, storyId)
+  const token = user.loginToken;
+  const res =  await axios({
+    url: `${BASE_URL}/users/${user.name}/favorites/${storyId}`,
+    method: "POST",
+    data: {token}
+  });
+  console.log(res)
+
+  user.favorites.push(res.data.user.favorites[0])
+}
+
+async function removeFav(user, storyId){
+  console.log(user.loginToken, storyId)
+  const token = user.loginToken;
+  const res =  await axios({
+    url: `${BASE_URL}/users/${user.name}/favorites/${storyId}`,
+    method: "DELETE",
+    data: {token}
+  });
+  user.favorites.pop(res.data.user.favorites[0])
+}
 
 $newStorySubmit.on('click', async function(e){
   e.preventDefault();

@@ -164,6 +164,8 @@ class User {
       },
       response.data.token
     );
+
+  
   }
 
   /** Login in user with API, make User instance & return it.
@@ -221,5 +223,9 @@ class User {
       console.error("loginViaStoredCredentials failed", err);
       return null;
     }
+  }
+
+  static isFavorite() {
+    console.log('this is favorite function')
   }
 }
