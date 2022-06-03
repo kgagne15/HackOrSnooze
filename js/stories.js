@@ -23,6 +23,21 @@ function generateStoryMarkup(story) {
   // console.debug("generateStoryMarkup", story);
 
   const hostName = story.getHostName();
+  if (currentUser) {
+    return $(`
+      <li id="${story.storyId}">
+      <a class="btn btn-md">
+        <i class="fa fa-regular fa-star"></i>
+         </a>
+        <a href="${story.url}" target="a_blank" class="story-link">
+          ${story.title}
+        </a>
+        <small class="story-hostname">(${hostName})</small>
+        <small class="story-author">by ${story.author}</small>
+        <small class="story-user">posted by ${story.username}</small>
+      </li>
+    `);
+  } else{
   return $(`
       <li id="${story.storyId}">
         <a href="${story.url}" target="a_blank" class="story-link">
@@ -33,6 +48,7 @@ function generateStoryMarkup(story) {
         <small class="story-user">posted by ${story.username}</small>
       </li>
     `);
+  }
 }
 
 
@@ -45,7 +61,6 @@ $newStorySubmit.on('click', async function(e){
   console.log(author, title, url)
 
   const story = {author, title, url}; 
-  storyList.addStory(currentUser, story)
   const newStory = await storyList.addStory(currentUser, story);
 })
 
@@ -64,3 +79,18 @@ function putStoriesOnPage() {
 
   $allStoriesList.show();
 }
+
+
+// function updateStoriesOnLogin(){
+
+//   // console.log($allStoriesList.children()); 
+//   for (let li of $allStoriesList.children()){
+//     let star = $`<i class="fa fa-regular fa-star"></i>`
+//   //   const star = `<div><a class="btn btn-md">
+//   //   <i class="fa fa-regular fa-star"></i>
+//   // </a></div>`
+//     console.log(li);
+//     li.prepend(star)
+//   }
+// }
+
