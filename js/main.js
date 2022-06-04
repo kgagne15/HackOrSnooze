@@ -7,6 +7,7 @@ const $body = $("body");
 const $newStoryBtn = $('#submitBtn'); 
 const $newStorySubmit = $('#new-story-submit');
 const $star = $('a.btn.btn-md').children('.fa-star')
+const $favScreenBtn = $('#favScreenBtn');
 
 const $storiesLoadingMsg = $("#stories-loading-msg");
 const $allStoriesList = $("#all-stories-list");
@@ -14,10 +15,13 @@ const $allStoriesList = $("#all-stories-list");
 const $loginForm = $("#login-form");
 const $signupForm = $("#signup-form");
 const $newStoryForm = $('#new-story-form');
+const $favoritesList = $('#favorite-list');
 
 const $navLogin = $("#nav-login");
 const $navUserProfile = $("#nav-user-profile");
 const $navLogOut = $("#nav-logout");
+
+
 
 /** To make it easier for individual components to show just themselves, this
  * is a useful function that hides pretty much everything on the page. After

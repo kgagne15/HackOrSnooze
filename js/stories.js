@@ -19,6 +19,22 @@ async function getAndShowStoriesOnStart() {
  * Returns the markup for the story.
  */
 
+function getFavoriteMarkup(storyId, title, url, author, username){
+  return $(`
+      <li id="${storyId}">
+      <a class="btn btn-md star">
+        <i class="fa-star fas"></i>
+         </a>
+        <a href="${url}" target="a_blank" class="story-link">
+          ${title}
+        </a>
+        <small class="story-hostname">(hostname.com)</small>
+        <small class="story-author">by ${author}</small>
+        <small class="story-user">posted by ${username}</small>
+      </li>
+    `);
+}
+
 function generateStoryMarkup(story) {
   // console.debug("generateStoryMarkup", story);
 
@@ -74,13 +90,13 @@ function generateStoryMarkup(story) {
 }
 
 $allStoriesList.on('click', '.star', function(e){
-  console.log(e.target, 'e.target here')
+  //console.log(e.target, 'e.target here')
   let $item = $(e.target);
   let $closestLi = $item.closest('li');
   let storyId = $closestLi.attr('id');
   //toggleFav(currentUser, storyId);
-  console.log(storyId)
-  console.log(currentUser.favorites.storyId)
+  //console.log(storyId)
+  //console.log(currentUser.favorites.storyId)
 
   const favIds = []; 
   for (let fav of currentUser.favorites){
@@ -100,38 +116,30 @@ $allStoriesList.on('click', '.star', function(e){
 
 })
 
-function isFavorite(user, storyId) {
-  const favIds = []; 
-  for (let fav of user.favorites){
-    favIds.push(fav.storyId)
-  }
 
-  if (favIds.includes(storyId)) {
-
-  }
-}
 
 async function addFav(user, storyId){
-  console.log(user.loginToken, storyId)
+  //console.log(user.loginToken, storyId)
   const token = user.loginToken;
   const res =  await axios({
     url: `${BASE_URL}/users/${user.name}/favorites/${storyId}`,
     method: "POST",
     data: {token}
   });
-  console.log(res)
-
-  user.favorites.push(res.data.user.favorites[0])
+  console.log(res);
+  
+  user.favorites.push(res.data.user.favorites[res.data.user.favorites.length-1])
 }
 
 async function removeFav(user, storyId){
-  console.log(user.loginToken, storyId)
+  //console.log(user.loginToken, storyId)
   const token = user.loginToken;
   const res =  await axios({
     url: `${BASE_URL}/users/${user.name}/favorites/${storyId}`,
     method: "DELETE",
     data: {token}
   });
+  
   user.favorites.pop(res.data.user.favorites[0])
 }
 
@@ -151,6 +159,7 @@ $newStorySubmit.on('click', async function(e){
 function putStoriesOnPage() {
   console.debug("putStoriesOnPage");
 
+  $favoritesList.empty();
   $allStoriesList.empty();
 
   // loop through all of our stories and generate HTML for them

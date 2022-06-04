@@ -41,6 +41,7 @@
   </div>
   <div class="nav-left">
     <a class="nav-link main-nav-links" href="#" id="submitBtn">Submit</a>
+    <a class="nav-link main-nav-links" href="#" id="favScreenBtn">Favorites</a>
   </div>
   <div class="nav-right">
     <a class="nav-link" href="#" id="nav-login">login/signup</a>
@@ -57,6 +58,23 @@
     <input type="text" id="new-story-url" placeholder="url">
     <button id="new-story-submit">Submit</button>
   </form>
+</section>
+
+<!-- <section class="favoritesContainer container">
+  <form action="#" class="hidden" method="get">
+    <h1>Favorites</h1>
+    <ol id="favorite-list" class="stories-list"></ol>
+  </form>
+</section> -->
+
+<section class="fav-stories-container container">
+
+  <!-- loading message (removed by JS after stories loaded) -->
+  <!-- <div id="stories-loading-msg">Loading&hellip;</div> -->
+
+  <!-- List of all stories -->
+  <ol id="favorite-list" class="stories-list"></ol>
+
 </section>
 
 <!-- area for stories (all stories, user stories, favorites) -->

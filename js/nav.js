@@ -9,6 +9,7 @@
 function navAllStories(evt) {
   console.debug("navAllStories", evt);
   hidePageComponents();
+  $favoritesList.hide();
   putStoriesOnPage();
 }
 
@@ -32,6 +33,7 @@ function updateNavOnLogin() {
   $(".main-nav-links").show();
   $navLogin.hide();
   $navLogOut.show();
+  
   $navUserProfile.text(`${currentUser.username}`).show();
 }
 
@@ -39,3 +41,62 @@ function updateNavOnLogin() {
 $newStoryBtn.on('click', function(){
   $newStoryForm.show();
 })
+
+$favScreenBtn.on('click', function(){
+  
+  hidePageComponents()
+  $navLogOut.show();
+
+  getFavoriteStories();
+
+  // const userFavorites = [];
+  // for (let fav of currentUser.favorites){
+  //   userFavorites.push(fav.storyId)
+  // }
+  // console.log(userFavorites)
+  // for (let fav of userFavorites) {
+  //   const res = await axios({
+  //     url: `${BASE_URL}/stories/${fav}`,
+  //     method: "GET",
+  //   });
+  //   console.log(res, 'this is the response inner loop of fav')
+  //   const favStory = {
+  //     StoryId: res.data.story.storyId,
+  //     Title: res.data.story.title,
+  //     Author: res.data.story.author,
+  //     Url: res.data.story.url,
+  //     Username: res.data.story.username
+  //   }
+  //   console.log(favStory)
+  //   const favorite = getFavoriteMarkup(favStory.StoryId, favStory.Title, favStory.Url, favStory.Author, favStory.Username);
+  //   $favoritesList.append(favorite);
+  // }
+  $favoritesList.show();
+
+})
+
+async function getFavoriteStories(){
+  const userFavorites = [];
+  for (let fav of currentUser.favorites){
+    userFavorites.push(fav.storyId)
+  }
+  console.log(userFavorites, 'look here')
+  for (let fav of userFavorites) {
+    console.log(fav);
+    const res = await axios({
+      url: `${BASE_URL}/stories/${fav}`,
+      method: "GET",
+    });
+    //console.log(res, 'this is the response inner loop of fav')
+    const favStory = {
+      StoryId: res.data.story.storyId,
+      Title: res.data.story.title,
+      Author: res.data.story.author,
+      Url: res.data.story.url,
+      Username: res.data.story.username
+    }
+    console.log(favStory)
+    const favorite = getFavoriteMarkup(favStory.StoryId, favStory.Title, favStory.Url, favStory.Author, favStory.Username);
+    $favoritesList.append(favorite);
+  }
+}
