@@ -74,7 +74,7 @@ function generateStoryMarkup(story) {
 }
 
 $allStoriesList.on('click', '.star', function(e){
-  console.log(e.target)
+  console.log(e.target, 'e.target here')
   let $item = $(e.target);
   let $closestLi = $item.closest('li');
   let storyId = $closestLi.attr('id');
@@ -86,22 +86,29 @@ $allStoriesList.on('click', '.star', function(e){
   for (let fav of currentUser.favorites){
     favIds.push(fav.storyId)
   }
-  console.log('favIds', favIds)
+  //console.log('favIds', favIds)
 
   if (favIds.includes(storyId)) {
     removeFav(currentUser, storyId)
     console.log('i\'ve removed this as a favorite')
+    $item.removeClass('fas').addClass('far'); 
   } else {
-    console.log('this isn not a favorite yet, I\'ll add it')
+    console.log('this is not a favorite yet, I\'ll add it')
     addFav(currentUser, storyId)
+    $item.removeClass('far').addClass('fas');
   }
 
 })
 
-function toggleFav(user, storyId){
-  console.log(user.favorites, 'these are the favorites')
+function isFavorite(user, storyId) {
+  const favIds = []; 
+  for (let fav of user.favorites){
+    favIds.push(fav.storyId)
+  }
 
-  
+  if (favIds.includes(storyId)) {
+
+  }
 }
 
 async function addFav(user, storyId){

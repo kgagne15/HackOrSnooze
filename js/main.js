@@ -6,7 +6,7 @@ const $body = $("body");
 
 const $newStoryBtn = $('#submitBtn'); 
 const $newStorySubmit = $('#new-story-submit');
-
+const $star = $('a.btn.btn-md').children('.fa-star')
 
 const $storiesLoadingMsg = $("#stories-loading-msg");
 const $allStoriesList = $("#all-stories-list");
