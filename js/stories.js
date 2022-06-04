@@ -116,6 +116,33 @@ $allStoriesList.on('click', '.star', function(e){
 
 })
 
+$favoritesList.on('click', '.star', function(e){
+  //console.log(e.target, 'e.target here')
+  let $item = $(e.target);
+  let $closestLi = $item.closest('li');
+  let storyId = $closestLi.attr('id');
+  //toggleFav(currentUser, storyId);
+  //console.log(storyId)
+  //console.log(currentUser.favorites.storyId)
+
+  const favIds = []; 
+  for (let fav of currentUser.favorites){
+    favIds.push(fav.storyId)
+  }
+  //console.log('favIds', favIds)
+
+  if (favIds.includes(storyId)) {
+    removeFav(currentUser, storyId)
+    console.log('i\'ve removed this as a favorite')
+    $item.removeClass('fas').addClass('far'); 
+  } else {
+    console.log('this is not a favorite yet, I\'ll add it')
+    addFav(currentUser, storyId)
+    $item.removeClass('far').addClass('fas');
+  }
+
+})
+
 
 
 async function addFav(user, storyId){
