@@ -11,7 +11,9 @@ function navAllStories(evt) {
   hidePageComponents();
   $favoritesList.hide();
   $newStoryForm.hide();
-  putStoriesOnPage();
+  $myList.hide();
+  getAndShowStoriesOnStart(); 
+  //putStoriesOnPage();
 }
 
 $body.on("click", "#nav-all", navAllStories);
@@ -39,23 +41,28 @@ function updateNavOnLogin() {
 }
 
 $myStoriesBtn.on('click', function(){
+  $myList.empty();
   $favoritesList.hide();
   $allStoriesList.hide();
   $newStoryForm.hide();
   $myList.show();
-  getMyStories(currentUser);
+  getMyStories();
 })
 
 $newStoryBtn.on('click', function(){
   $favoritesList.hide();
+  $allStoriesList.hide(); 
+  $myList.hide
   $newStoryForm.show();
 })
 
 $favScreenBtn.on('click', function(){
+  $favoritesList.empty();
   $newStoryForm.hide();
   hidePageComponents()
   $navLogOut.show();
-
+  
+  $myList.hide();
   getFavoriteStories();
 
   // const userFavorites = [];
@@ -110,17 +117,41 @@ async function getFavoriteStories(){
   }
 }
 
-async function getMyStories(user){
-  console.log(user.ownStories);
-  const myStories = [];
-  for (let story of user.ownStories){
-    const myStory = {
-      StoryId: story.storyId,
-      Title: story.title,
-      Author: story.author,
-      Url: story.url 
-    }
-    const myStoryMarkUp = getMyStoryMarkup(myStory.StoryId, myStory.Title, myStory.Author, myStory.Url)
-    $myList.append(myStoryMarkUp);
+async function getMyStories(){
+  // console.log(user, 'CURRENTUSER')
+  // const token = user.loginToken;
+  // console.log(token, 'token')
+  const myStories = []; 
+  for (let story of currentUser.ownStories) {
+    console.log(story.storyId);
+    myStories.push(story.storyId);
   }
+  console.log(myStories.length);
+  if (myStories.length >= 1) {
+
+  
+
+    for (let story of myStories) {
+      const res = await axios({
+        url: `${BASE_URL}/stories/${story}`,
+        method: "GET",
+      });
+      const myStory = {
+        StoryId: res.data.story.storyId,
+        Title: res.data.story.title,
+        Author: res.data.story.author,
+        Url: res.data.story.url,
+        Username: res.data.story.username
+      }
+      const ownStory = getMyStoryMarkup(myStory.StoryId, myStory.Title, myStory.Url, myStory.Author, myStory.Username);
+      $myList.append(ownStory);
+
+    }
+} else if (myStories.length === 0) {
+  let $item = $(`
+  <h3>No Stories Posted Yet</h3>
+  `);
+  $myList.append($item);
+}
+  
 }

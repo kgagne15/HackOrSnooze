@@ -22,11 +22,8 @@ async function getAndShowStoriesOnStart() {
 function getMyStoryMarkup(storyId, title, url, author) {
   return $(`
       <li id="${storyId}">
-      <a class="btn btn-md star">
+      <a class="btn btn-md trash">
         <i class="fas fa-trash-alt"></i>
-         </a>
-      <a class="btn btn-md star">
-        <i class="fa-star fas"></i>
          </a>
         <a href="${url}" target="a_blank" class="story-link">
           ${title}
@@ -107,6 +104,38 @@ function generateStoryMarkup(story) {
   }
 }
 
+$myList.on('click', '.trash', function(e){
+  let $item = $(e.target);
+  let $closestLi = $item.closest('li');
+  let storyId = $closestLi.attr('id');
+  //console.log(storyId, 'storyId of story to delete')
+  deleteStory(currentUser, storyId);
+  
+})
+
+async function deleteStory(user, storyId){
+  const token = user.loginToken;
+  console.log(user.ownStories, 'BEFORE')
+  for (let i = 0; i < user.ownStories.length; i++) {
+    console.log(user.ownStories[i].storyId);
+    if (user.ownStories[i].storyId === storyId) {
+      user.ownStories.splice(i, 1);
+
+    } 
+    
+  }
+  console.log(user.ownStories, 'AFTER')
+
+  //console.log(user.ownStories, storyId)
+  const res = await axios({
+    url: `${BASE_URL}/stories/${storyId}`,
+    method: "DELETE",
+    data: {token}
+  });
+ $myList.empty();
+   getMyStories();
+}
+
 $allStoriesList.on('click', '.star', function(e){
   //console.log(e.target, 'e.target here')
   let $item = $(e.target);
@@ -159,6 +188,7 @@ $favoritesList.on('click', '.star', function(e){
     $item.removeClass('far').addClass('fas');
   }
 
+
 })
 
 
@@ -206,6 +236,7 @@ $newStorySubmit.on('click', async function(e){
 function putStoriesOnPage() {
   console.debug("putStoriesOnPage");
 
+  $myList.empty(); 
   $favoritesList.empty();
   $allStoriesList.empty();
 
