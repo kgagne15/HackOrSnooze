@@ -10,6 +10,7 @@ function navAllStories(evt) {
   console.debug("navAllStories", evt);
   hidePageComponents();
   $favoritesList.hide();
+  $newStoryForm.hide();
   putStoriesOnPage();
 }
 
@@ -37,13 +38,21 @@ function updateNavOnLogin() {
   $navUserProfile.text(`${currentUser.username}`).show();
 }
 
+$myStoriesBtn.on('click', function(){
+  $favoritesList.hide();
+  $allStoriesList.hide();
+  $newStoryForm.hide();
+  $myList.show();
+  getMyStories(currentUser);
+})
 
 $newStoryBtn.on('click', function(){
+  $favoritesList.hide();
   $newStoryForm.show();
 })
 
 $favScreenBtn.on('click', function(){
-  
+  $newStoryForm.hide();
   hidePageComponents()
   $navLogOut.show();
 
@@ -98,5 +107,20 @@ async function getFavoriteStories(){
     console.log(favStory)
     const favorite = getFavoriteMarkup(favStory.StoryId, favStory.Title, favStory.Url, favStory.Author, favStory.Username);
     $favoritesList.append(favorite);
+  }
+}
+
+async function getMyStories(user){
+  console.log(user.ownStories);
+  const myStories = [];
+  for (let story of user.ownStories){
+    const myStory = {
+      StoryId: story.storyId,
+      Title: story.title,
+      Author: story.author,
+      Url: story.url 
+    }
+    const myStoryMarkUp = getMyStoryMarkup(myStory.StoryId, myStory.Title, myStory.Author, myStory.Url)
+    $myList.append(myStoryMarkUp);
   }
 }

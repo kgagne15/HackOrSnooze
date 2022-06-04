@@ -19,6 +19,24 @@ async function getAndShowStoriesOnStart() {
  * Returns the markup for the story.
  */
 
+function getMyStoryMarkup(storyId, title, url, author) {
+  return $(`
+      <li id="${storyId}">
+      <a class="btn btn-md star">
+        <i class="fas fa-trash-alt"></i>
+         </a>
+      <a class="btn btn-md star">
+        <i class="fa-star fas"></i>
+         </a>
+        <a href="${url}" target="a_blank" class="story-link">
+          ${title}
+        </a>
+        <small class="story-hostname">(hostname.com)</small>
+        <small class="story-author">by ${author}</small>
+      </li>
+    `);
+}
+
 function getFavoriteMarkup(storyId, title, url, author, username){
   return $(`
       <li id="${storyId}">
@@ -41,39 +59,39 @@ function generateStoryMarkup(story) {
   const hostName = story.getHostName();
   if (currentUser) {
     const favIds = []; 
-  for (let fav of currentUser.favorites){
-    favIds.push(fav.storyId)
-  }
+    for (let fav of currentUser.favorites){
+      favIds.push(fav.storyId)
+    }
 
-  if (favIds.includes(story.storyId)){
-    return $(`
-      <li id="${story.storyId}">
-      <a class="btn btn-md star">
-        <i class="fa-star fas"></i>
-         </a>
-        <a href="${story.url}" target="a_blank" class="story-link">
-          ${story.title}
-        </a>
-        <small class="story-hostname">(${hostName})</small>
-        <small class="story-author">by ${story.author}</small>
-        <small class="story-user">posted by ${story.username}</small>
-      </li>
-    `);
-  } else {
-    return $(`
-      <li id="${story.storyId}">
-      <a class="btn btn-md star">
-        <i class="fa-star far"></i>
-         </a>
-        <a href="${story.url}" target="a_blank" class="story-link">
-          ${story.title}
-        </a>
-        <small class="story-hostname">(${hostName})</small>
-        <small class="story-author">by ${story.author}</small>
-        <small class="story-user">posted by ${story.username}</small>
-      </li>
-    `);
-  }
+    if (favIds.includes(story.storyId)){
+      return $(`
+        <li id="${story.storyId}">
+        <a class="btn btn-md star">
+          <i class="fa-star fas"></i>
+          </a>
+          <a href="${story.url}" target="a_blank" class="story-link">
+            ${story.title}
+          </a>
+          <small class="story-hostname">(${hostName})</small>
+          <small class="story-author">by ${story.author}</small>
+          <small class="story-user">posted by ${story.username}</small>
+        </li>
+      `);
+    } else {
+      return $(`
+        <li id="${story.storyId}">
+        <a class="btn btn-md star">
+          <i class="fa-star far"></i>
+          </a>
+          <a href="${story.url}" target="a_blank" class="story-link">
+            ${story.title}
+          </a>
+          <small class="story-hostname">(${hostName})</small>
+          <small class="story-author">by ${story.author}</small>
+          <small class="story-user">posted by ${story.username}</small>
+        </li>
+      `);
+    }
     
   } else{
   return $(`
@@ -142,6 +160,8 @@ $favoritesList.on('click', '.star', function(e){
   }
 
 })
+
+
 
 
 
