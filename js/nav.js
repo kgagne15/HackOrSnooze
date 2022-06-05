@@ -13,7 +13,6 @@ function navAllStories(evt) {
   $newStoryForm.hide();
   $myList.hide();
   getAndShowStoriesOnStart(); 
-  //putStoriesOnPage();
 }
 
 $body.on("click", "#nav-all", navAllStories);
@@ -36,7 +35,6 @@ function updateNavOnLogin() {
   $(".main-nav-links").show();
   $navLogin.hide();
   $navLogOut.show();
-  
   $navUserProfile.text(`${currentUser.username}`).show();
 }
 
@@ -52,7 +50,7 @@ $myStoriesBtn.on('click', function(){
 $newStoryBtn.on('click', function(){
   $favoritesList.hide();
   $allStoriesList.hide(); 
-  $myList.hide
+  $myList.hide();
   $newStoryForm.show();
 })
 
@@ -61,34 +59,9 @@ $favScreenBtn.on('click', function(){
   $newStoryForm.hide();
   hidePageComponents()
   $navLogOut.show();
-  
   $myList.hide();
   getFavoriteStories();
-
-  // const userFavorites = [];
-  // for (let fav of currentUser.favorites){
-  //   userFavorites.push(fav.storyId)
-  // }
-  // console.log(userFavorites)
-  // for (let fav of userFavorites) {
-  //   const res = await axios({
-  //     url: `${BASE_URL}/stories/${fav}`,
-  //     method: "GET",
-  //   });
-  //   console.log(res, 'this is the response inner loop of fav')
-  //   const favStory = {
-  //     StoryId: res.data.story.storyId,
-  //     Title: res.data.story.title,
-  //     Author: res.data.story.author,
-  //     Url: res.data.story.url,
-  //     Username: res.data.story.username
-  //   }
-  //   console.log(favStory)
-  //   const favorite = getFavoriteMarkup(favStory.StoryId, favStory.Title, favStory.Url, favStory.Author, favStory.Username);
-  //   $favoritesList.append(favorite);
-  // }
   $favoritesList.show();
-
 })
 
 async function getFavoriteStories(){
@@ -96,14 +69,11 @@ async function getFavoriteStories(){
   for (let fav of currentUser.favorites){
     userFavorites.push(fav.storyId)
   }
-  console.log(userFavorites, 'look here')
   for (let fav of userFavorites) {
-    console.log(fav);
     const res = await axios({
       url: `${BASE_URL}/stories/${fav}`,
       method: "GET",
     });
-    //console.log(res, 'this is the response inner loop of fav')
     const favStory = {
       StoryId: res.data.story.storyId,
       Title: res.data.story.title,
@@ -111,16 +81,12 @@ async function getFavoriteStories(){
       Url: res.data.story.url,
       Username: res.data.story.username
     }
-    console.log(favStory)
     const favorite = getFavoriteMarkup(favStory.StoryId, favStory.Title, favStory.Url, favStory.Author, favStory.Username);
     $favoritesList.append(favorite);
   }
 }
 
 async function getMyStories(){
-  // console.log(user, 'CURRENTUSER')
-  // const token = user.loginToken;
-  // console.log(token, 'token')
   const myStories = []; 
   for (let story of currentUser.ownStories) {
     console.log(story.storyId);
@@ -128,9 +94,6 @@ async function getMyStories(){
   }
   console.log(myStories.length);
   if (myStories.length >= 1) {
-
-  
-
     for (let story of myStories) {
       const res = await axios({
         url: `${BASE_URL}/stories/${story}`,
@@ -145,13 +108,11 @@ async function getMyStories(){
       }
       const ownStory = getMyStoryMarkup(myStory.StoryId, myStory.Title, myStory.Url, myStory.Author, myStory.Username);
       $myList.append(ownStory);
-
     }
-} else if (myStories.length === 0) {
-  let $item = $(`
-  <h3>No Stories Posted Yet</h3>
-  `);
-  $myList.append($item);
-}
-  
+  } else if (myStories.length === 0) {
+    let $item = $(`
+    <h3>No Stories Posted Yet</h3>
+    `);
+    $myList.append($item);
+  }
 }

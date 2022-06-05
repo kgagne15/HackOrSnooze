@@ -108,25 +108,17 @@ $myList.on('click', '.trash', function(e){
   let $item = $(e.target);
   let $closestLi = $item.closest('li');
   let storyId = $closestLi.attr('id');
-  //console.log(storyId, 'storyId of story to delete')
   deleteStory(currentUser, storyId);
-  
 })
 
 async function deleteStory(user, storyId){
   const token = user.loginToken;
-  console.log(user.ownStories, 'BEFORE')
   for (let i = 0; i < user.ownStories.length; i++) {
     console.log(user.ownStories[i].storyId);
     if (user.ownStories[i].storyId === storyId) {
       user.ownStories.splice(i, 1);
-
     } 
-    
   }
-  console.log(user.ownStories, 'AFTER')
-
-  //console.log(user.ownStories, storyId)
   const res = await axios({
     url: `${BASE_URL}/stories/${storyId}`,
     method: "DELETE",
@@ -137,20 +129,13 @@ async function deleteStory(user, storyId){
 }
 
 $allStoriesList.on('click', '.star', function(e){
-  //console.log(e.target, 'e.target here')
   let $item = $(e.target);
   let $closestLi = $item.closest('li');
   let storyId = $closestLi.attr('id');
-  //toggleFav(currentUser, storyId);
-  //console.log(storyId)
-  //console.log(currentUser.favorites.storyId)
-
   const favIds = []; 
   for (let fav of currentUser.favorites){
     favIds.push(fav.storyId)
   }
-  //console.log('favIds', favIds)
-
   if (favIds.includes(storyId)) {
     removeFav(currentUser, storyId)
     console.log('i\'ve removed this as a favorite')
@@ -160,24 +145,16 @@ $allStoriesList.on('click', '.star', function(e){
     addFav(currentUser, storyId)
     $item.removeClass('far').addClass('fas');
   }
-
 })
 
 $favoritesList.on('click', '.star', function(e){
-  //console.log(e.target, 'e.target here')
   let $item = $(e.target);
   let $closestLi = $item.closest('li');
   let storyId = $closestLi.attr('id');
-  //toggleFav(currentUser, storyId);
-  //console.log(storyId)
-  //console.log(currentUser.favorites.storyId)
-
   const favIds = []; 
   for (let fav of currentUser.favorites){
     favIds.push(fav.storyId)
   }
-  //console.log('favIds', favIds)
-
   if (favIds.includes(storyId)) {
     removeFav(currentUser, storyId)
     console.log('i\'ve removed this as a favorite')
@@ -187,36 +164,26 @@ $favoritesList.on('click', '.star', function(e){
     addFav(currentUser, storyId)
     $item.removeClass('far').addClass('fas');
   }
-
-
 })
 
 
-
-
-
 async function addFav(user, storyId){
-  //console.log(user.loginToken, storyId)
   const token = user.loginToken;
   const res =  await axios({
     url: `${BASE_URL}/users/${user.name}/favorites/${storyId}`,
     method: "POST",
     data: {token}
-  });
-  console.log(res);
-  
+  });  
   user.favorites.push(res.data.user.favorites[res.data.user.favorites.length-1])
 }
 
 async function removeFav(user, storyId){
-  //console.log(user.loginToken, storyId)
   const token = user.loginToken;
   const res =  await axios({
     url: `${BASE_URL}/users/${user.name}/favorites/${storyId}`,
     method: "DELETE",
     data: {token}
   });
-  
   user.favorites.pop(res.data.user.favorites[0])
 }
 
@@ -225,8 +192,6 @@ $newStorySubmit.on('click', async function(e){
   const author = $('#new-story-author').val();
   const title = $('#new-story-title').val(); 
   const url = $('#new-story-url').val(); 
-  console.log(author, title, url)
-
   const story = {author, title, url}; 
   const newStory = await storyList.addStory(currentUser, story);
 })
@@ -248,18 +213,4 @@ function putStoriesOnPage() {
 
   $allStoriesList.show();
 }
-
-
-// function updateStoriesOnLogin(){
-
-//   // console.log($allStoriesList.children()); 
-//   for (let li of $allStoriesList.children()){
-//     let star = $`<i class="fa fa-regular fa-star"></i>`
-//   //   const star = `<div><a class="btn btn-md">
-//   //   <i class="fa fa-regular fa-star"></i>
-//   // </a></div>`
-//     console.log(li);
-//     li.prepend(star)
-//   }
-// }
 
