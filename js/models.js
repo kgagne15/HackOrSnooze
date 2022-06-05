@@ -25,7 +25,8 @@ class Story {
 
   getHostName() {
     // UNIMPLEMENTED: complete this function!
-    return "hostname.com";
+    // needed solution, will research what .host is
+    return new URL(this.url).host;
   }
 }
 

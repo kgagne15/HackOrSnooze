@@ -20,6 +20,7 @@ async function getAndShowStoriesOnStart() {
  */
 
 function getMyStoryMarkup(storyId, title, url, author) {
+  const hostName = new URL(url).host
   return $(`
       <li id="${storyId}">
       <a class="btn btn-md trash">
@@ -28,13 +29,14 @@ function getMyStoryMarkup(storyId, title, url, author) {
         <a href="${url}" target="a_blank" class="story-link">
           ${title}
         </a>
-        <small class="story-hostname">(hostname.com)</small>
+        <small class="story-hostname">${hostName}</small>
         <small class="story-author">by ${author}</small>
       </li>
     `);
 }
 
 function getFavoriteMarkup(storyId, title, url, author, username){
+  const hostName = new URL(url).host
   return $(`
       <li id="${storyId}">
       <a class="btn btn-md star">
@@ -43,7 +45,7 @@ function getFavoriteMarkup(storyId, title, url, author, username){
         <a href="${url}" target="a_blank" class="story-link">
           ${title}
         </a>
-        <small class="story-hostname">(hostname.com)</small>
+        <small class="story-hostname">${hostName}</small>
         <small class="story-author">by ${author}</small>
         <small class="story-user">posted by ${username}</small>
       </li>
@@ -138,10 +140,8 @@ $allStoriesList.on('click', '.star', function(e){
   }
   if (favIds.includes(storyId)) {
     removeFav(currentUser, storyId)
-    console.log('i\'ve removed this as a favorite')
     $item.removeClass('fas').addClass('far'); 
   } else {
-    console.log('this is not a favorite yet, I\'ll add it')
     addFav(currentUser, storyId)
     $item.removeClass('far').addClass('fas');
   }
@@ -157,10 +157,8 @@ $favoritesList.on('click', '.star', function(e){
   }
   if (favIds.includes(storyId)) {
     removeFav(currentUser, storyId)
-    console.log('i\'ve removed this as a favorite')
     $item.removeClass('fas').addClass('far'); 
   } else {
-    console.log('this is not a favorite yet, I\'ll add it')
     addFav(currentUser, storyId)
     $item.removeClass('far').addClass('fas');
   }
@@ -194,6 +192,7 @@ $newStorySubmit.on('click', async function(e){
   const url = $('#new-story-url').val(); 
   const story = {author, title, url}; 
   const newStory = await storyList.addStory(currentUser, story);
+  console.log(newStory)
 })
 
 /** Gets list of stories from server, generates their HTML, and puts on page. */
