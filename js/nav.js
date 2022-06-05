@@ -89,10 +89,10 @@ async function getFavoriteStories(){
 async function getMyStories(){
   const myStories = []; 
   for (let story of currentUser.ownStories) {
-    console.log(story.storyId);
+    //console.log(story.storyId);
     myStories.push(story.storyId);
   }
-  console.log(myStories.length);
+  //console.log(myStories.length);
   if (myStories.length >= 1) {
     for (let story of myStories) {
       const res = await axios({

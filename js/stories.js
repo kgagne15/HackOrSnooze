@@ -192,7 +192,7 @@ $newStorySubmit.on('click', async function(e){
   const url = $('#new-story-url').val(); 
   const story = {author, title, url}; 
   const newStory = await storyList.addStory(currentUser, story);
-  console.log(newStory)
+  //console.log(newStory)
 })
 
 /** Gets list of stories from server, generates their HTML, and puts on page. */
