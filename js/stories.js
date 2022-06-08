@@ -205,6 +205,7 @@ function putStoriesOnPage() {
   $myList.empty(); 
   $favoritesList.empty();
   $allStoriesList.empty();
+  
 
   // loop through all of our stories and generate HTML for them
   for (let story of storyList.stories) {

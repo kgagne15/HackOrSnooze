@@ -22,6 +22,9 @@ $body.on("click", "#nav-all", navAllStories);
 function navLoginClick(evt) {
   console.debug("navLoginClick", evt);
   hidePageComponents();
+  $myStoriesBtn.hide();
+  $newStoryBtn.hide();
+  $favScreenBtn.hide();
   $loginForm.show();
   $signupForm.show();
 }

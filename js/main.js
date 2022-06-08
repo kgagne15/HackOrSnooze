@@ -48,6 +48,10 @@ async function start() {
   await checkForRememberedUser();
   await getAndShowStoriesOnStart();
 
+  $myStoriesBtn.hide();
+  $newStoryBtn.hide();
+  $favScreenBtn.hide();
+
   // if we got a logged-in user
   if (currentUser) updateUIOnUserLogin();
 }
