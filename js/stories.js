@@ -182,7 +182,9 @@ async function removeFav(user, storyId){
     method: "DELETE",
     data: {token}
   });
-  user.favorites.pop(res.data.user.favorites[0])
+  user.favorites = res.data.user.favorites.filter(function(fav){
+    return fav.storyId !== storyId; 
+  })
 }
 
 $newStorySubmit.on('click', async function(e){
