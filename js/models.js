@@ -212,7 +212,5 @@ class User {
     }
   }
 
-  static isFavorite() {
-    console.log('this is favorite function')
-  }
+  
 }
